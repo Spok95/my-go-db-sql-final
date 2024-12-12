@@ -49,15 +49,7 @@ func (s ParcelStore) Get(number int) (Parcel, error) {
 		fmt.Println(err)
 		return Parcel{}, err
 	}
-	// заполните объект Parcel данными из таблицы
-	p := Parcel{
-		Number:    par.Number,
-		Client:    par.Client,
-		Status:    par.Status,
-		Address:   par.Address,
-		CreatedAt: par.CreatedAt,
-	}
-	return p, nil
+	return par, nil
 }
 
 func (s ParcelStore) GetByClient(client int) ([]Parcel, error) {
@@ -79,6 +71,10 @@ func (s ParcelStore) GetByClient(client int) ([]Parcel, error) {
 			return res, fmt.Errorf("failed to scan row: %w", err)
 		}
 		res = append(res, p)
+	}
+	// проверка на наличие ошибки после цикла
+	if err = rows.Err(); err != nil {
+		return nil, fmt.Errorf("error iterating rows: %w", err)
 	}
 	return res, nil
 }
