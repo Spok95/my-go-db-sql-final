@@ -3,7 +3,6 @@ package main
 import (
 	"database/sql"
 	"math/rand"
-	"reflect"
 	"testing"
 	"time"
 
@@ -159,7 +158,7 @@ func TestGetByClient(t *testing.T) {
 	for _, storedParcel := range storedParcels {
 		parcel, ok := parcelMap[storedParcel.Number]
 		require.True(t, ok, "parcel with ID %d not found in parcelMap", storedParcel.Number)
-		require.True(t, reflect.DeepEqual(storedParcel, parcel), storedParcel.Number)
+		require.Equal(t, storedParcel, parcel)
 		// в parcelMap лежат добавленные посылки, ключ - идентификатор посылки, значение - сама посылка
 		// убедитесь, что все посылки из storedParcels есть в parcelMap
 		// убедитесь, что значения полей полученных посылок заполнены верно
